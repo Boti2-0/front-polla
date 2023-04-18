@@ -1,0 +1,52 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v3
+
+      - name: Installing Node.js
+        uses: actions/setup-node@v3
+
+        with:
+          node-version: '18.x'
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            public
+            .cache
+            node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Installing dependencies
+        run: yarn install
+
+      - name: Building project
+        run: yarn build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3 bucket
+        run: aws s3 sync build/ s3://${{ secrets.AWS_DEPLOY_BUCKET }} --delete   
+
+#      - name: Invalidate cache
+#        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
