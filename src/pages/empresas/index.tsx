@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { CadastroEmpresaService } from "./../../services/api";
 import { useUserStore } from "./../../stores/users";
 import { EmpresaStore } from "../../stores/empresas";
-import img from "../../assets/data.png";
 
 const Empresas = ({ setAuth }) => {
   const token = useUserStore((state) => state.token);
@@ -53,7 +52,6 @@ const Empresas = ({ setAuth }) => {
             <Typography variant="h4" textAlign={"center"} mt={10}>
               Sem dados disponiveis
             </Typography>
-            <Box component="img" src={img} alt="logo" width="50%" />
           </>
         )}
       </Grid>

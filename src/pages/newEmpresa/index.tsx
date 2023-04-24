@@ -137,33 +137,39 @@ const NewEmpresa = ({ setAuth }) => {
         pauseOnHover
         theme="colored"
       />
-      <Grid
-        container
-        maxWidth="xl"
-        sx={{
-          display: "flex",
-          height: "100vh",
-        }}
-      >
+      <Grid container>
         <Header />
-        <Grid
+        <Box
+          component={Grid}
           item
-          xs={0}
-          sm={2}
-          lg={2}
-          md={2}
-          xl={2}
+          xs={2}
           sx={{ marginTop: "100px" }}
+          display={{ xs: "none", lg: "block" }}
         >
           <Sidebar />
-        </Grid>
-        <Grid item xs={12} lg={8} md={8} xl={8} sx={{ marginTop: "100px" }}>
-          <Typography variant="h5" gutterBottom sx={{ marginBottom: "50px" }}>
+        </Box>
+        <Grid
+          item
+          xs={12}
+          md={9}
+          lg={9}
+          justifyContent={"center"}
+          alignContent={"center"}
+          sx={{ marginTop: "100px" }}
+        >
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ marginBottom: "50px", marginLeft: "20px" }}
+          >
             {edit.id > 0 ? `Editar ${edit.razaoSocial}` : "Cadastrar Empresa"}
           </Typography>
           <FormikProvider value={formik}>
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-              <Stack spacing={3}>
+              <Stack
+                spacing={3}
+                sx={{ marginLeft: "20px", marginRight: "20px" }}
+              >
                 <Stack
                   component={motion.div}
                   initial={{ opacity: 0, y: 60 }}
