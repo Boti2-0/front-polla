@@ -97,7 +97,7 @@ export default function Header() {
         </div>
 
         <IconButton
-          style={{ color: "#009FE3" }}
+          style={{ color: "#009FE3", marginRight: '-50px' }}
           aria-label="upload picture"
           component="label"
           onClick={() => {

@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Sidebar from "./../../components/sidebar";
 import Header from "../../components/header";
 import Table from "../../components/table";
@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CadastroEmpresaService } from "./../../services/api";
 import { useUserStore } from "./../../stores/users";
 import { EmpresaStore } from "../../stores/empresas";
+import img from "../../assets/data.png";
 
 const Empresas = ({ setAuth }) => {
   const token = useUserStore((state) => state.token);
@@ -23,23 +24,38 @@ const Empresas = ({ setAuth }) => {
   }, [cleanEmpresas]);
 
   return (
-    <Grid
-      container
-      maxWidth="xl"
-      sx={{
-        display: "flex",
-        height: "100vh",
-      }}
-    >
+    <Grid container>
       <Header />
-      <Grid item xs={0} sm={2} lg={2} md={2} xl={2} sx={{ marginTop: "100px" }}>
+      <Box
+        component={Grid}
+        item
+        xs={2}
+        sx={{ marginTop: "100px" }}
+        display={{ xs: "none", lg: "block" }}
+      >
         <Sidebar />
-      </Grid>
-      <Grid item xs={12} lg={10} md={10} xl={10} sx={{ marginTop: "100px" }}>
+      </Box>
+      <Grid
+        item
+        xs={12}
+        lg={10}
+        md={10}
+        xl={10}
+        sx={{ marginTop: "100px", paddingRight: "20px", paddingLeft: "20px" }}
+      >
         <Typography variant="h5" gutterBottom sx={{ marginBottom: "50px" }}>
           Gerenciar Empresas
         </Typography>
-        {users !== undefined ? <Table data={users} /> : null}
+        {users !== undefined ? (
+          <Table data={users} />
+        ) : (
+          <>
+            <Typography variant="h4" textAlign={"center"} mt={10}>
+              Sem dados disponiveis
+            </Typography>
+            <Box component="img" src={img} alt="logo" width="50%" />
+          </>
+        )}
       </Grid>
     </Grid>
   );

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-interface Empresa {
+export interface Empresa {
   id: number;
   razaoSocial: string;
   cnpj: string;

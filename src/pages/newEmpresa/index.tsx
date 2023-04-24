@@ -97,69 +97,28 @@ const NewEmpresa = ({ setAuth }) => {
     },
     validationSchema: SignupSchema,
     onSubmit: () => {
-      if (socios.length !== 0) {
-        CadastroEmpresaService.post("/socio/create", socios[0], {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          .then((res) => {
-            formik.values.socios = socios;
-            formik.values.cnpj = formik.values.cnpj.replace(/\D/g, "");
+      formik.values.socios = socios;
+      formik.values.cnpj = formik.values.cnpj.replace(/\D/g, "");
 
-            CadastroEmpresaService.post("/empresa/create", formik.values, {
-              headers: { Authorization: `Bearer ${token}` },
-            })
-              .then(() => {
-                cleanEmpresas();
-                navigate(from, { replace: true });
-              })
-              .catch((err) => {
-                toast.error("Ooops! Algo deu errado, tente novamente", {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-              });
-          })
-          .catch((err) => {
-            toast.error("Ooops! Algo deu errado, tente novamente", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          });
-      } else {
-        formik.values.cnpj = formik.values.cnpj.replace(/\D/g, "");
-
-        CadastroEmpresaService.post("/empresa/create", formik.values, {
-          headers: { Authorization: `Bearer ${token}` },
+      CadastroEmpresaService.post("/empresa/create", formik.values, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(() => {
+          cleanEmpresas();
+          navigate(from, { replace: true });
         })
-          .then(() => {
-            cleanEmpresas();
-            navigate(from, { replace: true });
-          })
-          .catch((err) => {
-            toast.error("Ooops! Algo deu errado, tente novamente", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
+        .catch((err) => {
+          toast.error("Ooops! Algo deu errado, tente novamente", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
           });
-      }
+        });
     },
   });
 

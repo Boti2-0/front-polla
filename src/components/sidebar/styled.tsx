@@ -6,6 +6,7 @@ export const CustomCard = styled(Card)`
   && {
     display: flex;
     border-radius: 15px;
+    margin-left: 20px;
     width: 220px;
     height: 150px;
     background-color: #ffffff;
