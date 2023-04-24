@@ -15,8 +15,10 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
+
 const App: React.FC = () => {
   const isLogged = useUserStore((state) => state.isLogged);
+
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
     isAuthenticated: isLogged,
     authenticationPath: "/login",
