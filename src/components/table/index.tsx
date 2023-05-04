@@ -12,6 +12,7 @@ import { Cell, ChipAlert, ChipSucess, CustomTable, TableMain } from "./styled";
 import { useNavigate } from "react-router-dom";
 import ModalConfirm from "./../../components/modalConfirm";
 import { EmpresaStore } from "../../stores/empresas";
+import { cnpj } from "cpf-cnpj-validator";
 
 export default function Table(data: any) {
   const [page, setPage] = React.useState(0);
@@ -43,23 +44,23 @@ export default function Table(data: any) {
         open={open}
         empresa={empresa}
       />
-      <CustomTable>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            margin: " 0px 64px",
-          }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "40px",
+        }}
+      >
+        <Button
+          variant="contained"
+          endIcon={<AddIcon />}
+          onClick={() => navigate("/new-empresa")}
         >
-          <Button
-            variant="contained"
-            endIcon={<AddIcon />}
-            onClick={() => navigate("/new-empresa")}
-          >
-            Cadastrar nova empresa
-          </Button>
-        </div>
+          Cadastrar nova empresa
+        </Button>
+      </div>
 
+      <CustomTable>
         <TableMain>
           <TableHead>
             <TableRow>
@@ -67,8 +68,8 @@ export default function Table(data: any) {
               <Cell>CNPJ</Cell>
               <Cell>Grupo</Cell>
               <Cell>UF</Cell>
-              <Cell>ICMS</Cell>
-              <Cell>ISS</Cell>
+              <Cell align="center">ICMS</Cell>
+              <Cell align="center">ISS</Cell>
               <Cell>Editar</Cell>
               <Cell>Deletar</Cell>
             </TableRow>
@@ -81,17 +82,17 @@ export default function Table(data: any) {
                   <TableCell component="th" scope="row">
                     {row.razaoSocial}
                   </TableCell>
-                  <TableCell align="left">{row.cnpj}</TableCell>
+                  <TableCell align="left">{cnpj.format(row.cnpj)}</TableCell>
                   <TableCell align="left">{row.grupo}</TableCell>
                   <TableCell align="left">{row.uf}</TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     {row.icms ? (
                       <ChipAlert size="small" label={"ATIVO"} />
                     ) : (
                       <ChipSucess size="small" label={"DESATIVADO"} />
                     )}
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     {row.iss ? (
                       <ChipAlert size="small" label={"ATIVO"} />
                     ) : (
