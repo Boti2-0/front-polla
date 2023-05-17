@@ -169,7 +169,7 @@ const Home = ({ setAuth }) => {
 
     onSubmit: () => {
       FilesService.get(
-        `/onedrive/DAS?empresa=${
+        `/files/DAS?empresa=${
           formik.values.id
         }&periodo=${formik.values.date.format("YYYY-MM-DD")}`,
         {
