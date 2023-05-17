@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { Button, TextField, Grid, Autocomplete } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,14 +21,11 @@ const AddSocio = ({ onSociosChange }) => {
     console.log("Submitted values:", values);
   };
 
-  useEffect(() => {
-    console.log(socios);
-  }, [socios]);
-
   const handleInputChange = (event, index, field) => {
     const newSocios = [...socios];
-    newSocios[index]["id"] =
-      options[index]?.id !== undefined ? options[index].id : 0;
+    if (options[index]?.id !== undefined) {
+      newSocios[index]["id"] = options[index].id;
+    }
     newSocios[index][field] = event;
     setSocios(newSocios);
     CadastroEmpresaService.get(
@@ -39,6 +36,14 @@ const AddSocio = ({ onSociosChange }) => {
     ).then((res) => {
       setOptions(res.data);
     });
+
+    const result = newSocios.map((obj) => {
+      return {
+        ...obj, // copy all fields from original object
+        cpf: obj.cpf.replace(/\D/g, ""), // replace cpf field with digits only
+      };
+    });
+    onSociosChange(result);
   };
 
   const addUser = () => {

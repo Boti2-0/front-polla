@@ -9,6 +9,12 @@ import { useUserStore } from "./stores/users";
 import CustomRoute from "./routes/CustomRoute";
 import Empresas from "./pages/empresas";
 import NewEmpresa from "./pages/newEmpresa";
+import GlobalStyle from "./assets/styles/global";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+
 
 const App: React.FC = () => {
   const isLogged = useUserStore((state) => state.isLogged);
@@ -17,42 +23,44 @@ const App: React.FC = () => {
     authenticationPath: "/login",
   };
   return (
-    <Routes>
-      <Route path="/" element={<CustomRoute isLoggedIn={isLogged} />} />
-      <Route
-        path="home"
-        element={
-          <ProtectedRoute
-            authenticationPath={""}
-            {...defaultProtectedRouteProps}
-            outlet={<Home setAuth={isLogged} />}
-          />
-        }
-      />
-       <Route
-        path="empresas"
-        element={
-          <ProtectedRoute
-            authenticationPath={""}
-            {...defaultProtectedRouteProps}
-            outlet={<Empresas setAuth={isLogged} />}
-          />
-        }
-      />
+    <>
+      <GlobalStyle />
+      <Routes>
+        <Route path="/" element={<CustomRoute isLoggedIn={isLogged} />} />
         <Route
-        path="new-empresa"
-        element={
-          <ProtectedRoute
-            authenticationPath={""}
-            {...defaultProtectedRouteProps}
-            outlet={<NewEmpresa setAuth={isLogged} />}
-          />
-        }
-      />
-      <Route path="login" element={<LoginPage setAuth={isLogged} />} />
-      <Route path="register" element={<Register setAuth={isLogged} />} />
-     
-    </Routes>
+          path="home"
+          element={
+            <ProtectedRoute
+              authenticationPath={""}
+              {...defaultProtectedRouteProps}
+              outlet={<Home setAuth={isLogged} />}
+            />
+          }
+        />
+        <Route
+          path="empresas"
+          element={
+            <ProtectedRoute
+              authenticationPath={""}
+              {...defaultProtectedRouteProps}
+              outlet={<Empresas setAuth={isLogged} />}
+            />
+          }
+        />
+        <Route
+          path="new-empresa"
+          element={
+            <ProtectedRoute
+              authenticationPath={""}
+              {...defaultProtectedRouteProps}
+              outlet={<NewEmpresa setAuth={isLogged} />}
+            />
+          }
+        />
+        <Route path="login" element={<LoginPage setAuth={isLogged} />} />
+        <Route path="register" element={<Register setAuth={isLogged} />} />
+      </Routes>
+    </>
   );
 };
 

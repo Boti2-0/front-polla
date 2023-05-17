@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Container,
   FormControl,
   FormControlLabel,
   Grid,
@@ -97,69 +98,28 @@ const NewEmpresa = ({ setAuth }) => {
     },
     validationSchema: SignupSchema,
     onSubmit: () => {
-      if (socios.length !== 0) {
-        CadastroEmpresaService.post("/socio/create", socios[0], {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          .then((res) => {
-            formik.values.socios = socios;
-            formik.values.cnpj = formik.values.cnpj.replace(/\D/g, "");
+      formik.values.socios = socios;
+      formik.values.cnpj = formik.values.cnpj.replace(/\D/g, "");
 
-            CadastroEmpresaService.post("/empresa/create", formik.values, {
-              headers: { Authorization: `Bearer ${token}` },
-            })
-              .then(() => {
-                cleanEmpresas();
-                navigate(from, { replace: true });
-              })
-              .catch((err) => {
-                toast.error("Ooops! Algo deu errado, tente novamente", {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-              });
-          })
-          .catch((err) => {
-            toast.error("Ooops! Algo deu errado, tente novamente", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          });
-      } else {
-        formik.values.cnpj = formik.values.cnpj.replace(/\D/g, "");
-
-        CadastroEmpresaService.post("/empresa/create", formik.values, {
-          headers: { Authorization: `Bearer ${token}` },
+      CadastroEmpresaService.post("/empresa/create", formik.values, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(() => {
+          cleanEmpresas();
+          navigate(from, { replace: true });
         })
-          .then(() => {
-            cleanEmpresas();
-            navigate(from, { replace: true });
-          })
-          .catch((err) => {
-            toast.error("Ooops! Algo deu errado, tente novamente", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
+        .catch((err) => {
+          toast.error("Ooops! Algo deu errado, tente novamente", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
           });
-      }
+        });
     },
   });
 
@@ -178,198 +138,208 @@ const NewEmpresa = ({ setAuth }) => {
         pauseOnHover
         theme="colored"
       />
-      <Grid
-        container
-        maxWidth="xl"
-        sx={{
-          display: "flex",
-          height: "100vh",
-        }}
-      >
-        <Header />
-        <Grid
-          item
-          xs={0}
-          sm={2}
-          lg={2}
-          md={2}
-          xl={2}
-          sx={{ marginTop: "100px" }}
-        >
-          <Sidebar />
-        </Grid>
-        <Grid item xs={12} lg={8} md={8} xl={8} sx={{ marginTop: "100px" }}>
-          <Typography variant="h5" gutterBottom sx={{ marginBottom: "50px" }}>
-            {edit.id > 0 ? `Editar ${edit.razaoSocial}` : "Cadastrar Empresa"}
-          </Typography>
-          <FormikProvider value={formik}>
-            <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-              <Stack spacing={3}>
+      <Container maxWidth={'xl'}>
+        <Grid container>
+          <Header />
+          <Box
+            component={Grid}
+            item
+            xs={2}
+            sx={{ marginTop: "100px" }}
+            display={{ xs: "none", lg: "block" }}
+          >
+            <Sidebar />
+          </Box>
+          <Grid
+            item
+            xs={12}
+            md={9}
+            lg={9}
+            justifyContent={"center"}
+            alignContent={"center"}
+            sx={{ marginTop: "100px" }}
+          >
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{ marginBottom: "50px", marginLeft: "20px" }}
+            >
+              {edit.id > 0 ? `Editar ${edit.razaoSocial}` : "Cadastrar Empresa"}
+            </Typography>
+            <FormikProvider value={formik}>
+              <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Stack
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={animate}
-                  direction={{ xs: "column", sm: "row" }}
-                  spacing={2}
+                  spacing={3}
+                  sx={{ marginLeft: "20px", marginRight: "20px" }}
                 >
-                  <TextField
-                    fullWidth
-                    label="Razão Social"
-                    {...getFieldProps("razaoSocial")}
-                    error={Boolean(touched.razaoSocial && errors.razaoSocial)}
-                    helperText={touched.razaoSocial && errors.razaoSocial}
-                  />
-                  <InputMask
-                    mask="99.999.999/9999-99"
-                    disabled={false}
-                    maskChar=" "
-                    {...getFieldProps("cnpj")}
-                    error={Boolean(touched.cnpj && errors.cnpj)}
-                    helperText={touched.cnpj && errors.cnpj}
-                  >
-                    {() => (
-                      <TextField
-                        fullWidth
-                        label="CNPJ"
-                        {...getFieldProps("cnpj")}
-                        error={Boolean(touched.cnpj && errors.cnpj)}
-                        helperText={touched.cnpj && errors.cnpj}
-                      />
-                    )}
-                  </InputMask>
-                </Stack>
-
-                <Stack
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={animate}
-                  direction={{ xs: "column", sm: "row" }}
-                  spacing={2}
-                >
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel id="brazilian-states-label">Grupo</InputLabel>
-                    <Select
-                      labelId="grupo"
-                      label="grupo"
-                      {...getFieldProps("grupo")}
-                    >
-                      {grupos?.map((grupo, key) => (
-                        <MenuItem key={key} value={grupo}>
-                          {grupo}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel id="brazilian-states-label">Regime</InputLabel>
-                    <Select
-                      labelId="regime"
-                      label="regime"
-                      {...getFieldProps("regime")}
-                    >
-                      {regimes?.map((regime, key) => (
-                        <MenuItem key={key} value={regime}>
-                          {regime}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Stack>
-                <Stack
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={animate}
-                  direction={{ xs: "column", sm: "row" }}
-                  spacing={2}
-                >
-                  <TextField
-                    fullWidth
-                    label="Código"
-                    type="number"
-                    {...getFieldProps("codigo")}
-                    error={Boolean(touched.codigo && errors.codigo)}
-                    helperText={touched.codigo && errors.codigo}
-                  />
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel id="brazilian-states-label">UF</InputLabel>
-                    <Select
-                      labelId="brazilian-states-label"
-                      label="Brazilian States"
-                      {...getFieldProps("uf")}
-                    >
-                      {brazilianStates.map((state) => (
-                        <MenuItem
-                          key={state.abbreviation}
-                          value={state.abbreviation}
-                        >
-                          {state.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControlLabel
-                    value={edit.icms}
-                    control={
-                      <Switch
-                        color="primary"
-                        {...getFieldProps("icms")}
-                        defaultChecked={edit.icms}
-                      />
-                    }
-                    label="ICMS"
-                    labelPlacement="top"
-                  />
-                  <FormControlLabel
-                    value={edit.iss}
-                    control={
-                      <Switch
-                        color="primary"
-                        defaultChecked={edit.iss}
-                        {...getFieldProps("iss")}
-                        value={edit.iss}
-                      />
-                    }
-                    label="ISS"
-                    labelPlacement="top"
-                  />
-                </Stack>
-                <Stack
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={animate}
-                  direction={{ xs: "column", sm: "row" }}
-                  spacing={2}
-                >
-                  <AddSocio onSociosChange={handleSociosChange} />
-                </Stack>
-
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: "50px",
-                  }}
-                >
-                  <Box
+                  <Stack
                     component={motion.div}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 60 }}
                     animate={animate}
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={2}
                   >
-                    <Button
+                    <TextField
                       fullWidth
-                      size="large"
-                      type="submit"
-                      variant="contained"
+                      label="Razão Social"
+                      {...getFieldProps("razaoSocial")}
+                      error={Boolean(touched.razaoSocial && errors.razaoSocial)}
+                      helperText={touched.razaoSocial && errors.razaoSocial}
+                    />
+                    <InputMask
+                      mask="99.999.999/9999-99"
+                      disabled={false}
+                      maskChar=" "
+                      {...getFieldProps("cnpj")}
+                      error={Boolean(touched.cnpj && errors.cnpj)}
+                      helperText={touched.cnpj && errors.cnpj}
                     >
-                      {edit.id > 0 ? "Editar Empresa" : "Cadastre-se"}
-                    </Button>
-                  </Box>
-                </div>
-              </Stack>
-            </Form>
-          </FormikProvider>
+                      {() => (
+                        <TextField
+                          fullWidth
+                          label="CNPJ"
+                          {...getFieldProps("cnpj")}
+                          error={Boolean(touched.cnpj && errors.cnpj)}
+                          helperText={touched.cnpj && errors.cnpj}
+                        />
+                      )}
+                    </InputMask>
+                  </Stack>
+
+                  <Stack
+                    component={motion.div}
+                    initial={{ opacity: 0, y: 60 }}
+                    animate={animate}
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={2}
+                  >
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel id="brazilian-states-label">Grupo</InputLabel>
+                      <Select
+                        labelId="grupo"
+                        label="grupo"
+                        {...getFieldProps("grupo")}
+                      >
+                        {grupos?.map((grupo, key) => (
+                          <MenuItem key={key} value={grupo}>
+                            {grupo}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel id="brazilian-states-label">
+                        Regime
+                      </InputLabel>
+                      <Select
+                        labelId="regime"
+                        label="regime"
+                        {...getFieldProps("regime")}
+                      >
+                        {regimes?.map((regime, key) => (
+                          <MenuItem key={key} value={regime}>
+                            {regime}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Stack>
+                  <Stack
+                    component={motion.div}
+                    initial={{ opacity: 0, y: 60 }}
+                    animate={animate}
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={2}
+                  >
+                    <TextField
+                      fullWidth
+                      label="Código"
+                      type="number"
+                      {...getFieldProps("codigo")}
+                      error={Boolean(touched.codigo && errors.codigo)}
+                      helperText={touched.codigo && errors.codigo}
+                    />
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel id="brazilian-states-label">UF</InputLabel>
+                      <Select
+                        labelId="brazilian-states-label"
+                        label="Brazilian States"
+                        {...getFieldProps("uf")}
+                      >
+                        {brazilianStates.map((state) => (
+                          <MenuItem
+                            key={state.abbreviation}
+                            value={state.abbreviation}
+                          >
+                            {state.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControlLabel
+                      value={edit.icms}
+                      control={
+                        <Switch
+                          color="primary"
+                          {...getFieldProps("icms")}
+                          defaultChecked={edit.icms}
+                        />
+                      }
+                      label="ICMS"
+                      labelPlacement="top"
+                    />
+                    <FormControlLabel
+                      value={edit.iss}
+                      control={
+                        <Switch
+                          color="primary"
+                          defaultChecked={edit.iss}
+                          {...getFieldProps("iss")}
+                          value={edit.iss}
+                        />
+                      }
+                      label="ISS"
+                      labelPlacement="top"
+                    />
+                  </Stack>
+                  <Stack
+                    component={motion.div}
+                    initial={{ opacity: 0, y: 60 }}
+                    animate={animate}
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={2}
+                  >
+                    <AddSocio onSociosChange={handleSociosChange} />
+                  </Stack>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      marginTop: "50px",
+                    }}
+                  >
+                    <Box
+                      component={motion.div}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={animate}
+                    >
+                      <Button
+                        fullWidth
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                      >
+                        {edit.id > 0 ? "Editar Empresa" : "Cadastre-se"}
+                      </Button>
+                    </Box>
+                  </div>
+                </Stack>
+              </Form>
+            </FormikProvider>
+          </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </>
   );
 };

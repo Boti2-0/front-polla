@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Sidebar from "./../../components/sidebar";
 import Header from "../../components/header";
 import Table from "../../components/table";
@@ -23,25 +23,41 @@ const Empresas = ({ setAuth }) => {
   }, [cleanEmpresas]);
 
   return (
-    <Grid
-      container
-      maxWidth="xl"
-      sx={{
-        display: "flex",
-        height: "100vh",
-      }}
-    >
-      <Header />
-      <Grid item xs={0} sm={2} lg={2} md={2} xl={2} sx={{ marginTop: "100px" }}>
-        <Sidebar />
+    <Container maxWidth={"xl"}>
+      <Grid container>
+        <Header />
+        <Box
+          component={Grid}
+          item
+          xs={2}
+          sx={{ marginTop: "100px" }}
+          display={{ xs: "none", lg: "block" }}
+        >
+          <Sidebar />
+        </Box>
+        <Grid
+          item
+          xs={12}
+          lg={10}
+          md={10}
+          xl={10}
+          sx={{ marginTop: "100px", paddingRight: "20px", paddingLeft: "20px" }}
+        >
+          <Typography variant="h5" gutterBottom sx={{ marginBottom: "50px" }}>
+            Gerenciar Empresas
+          </Typography>
+          {users !== undefined ? (
+            <Table data={users} />
+          ) : (
+            <>
+              <Typography variant="h4" textAlign={"center"} mt={10}>
+                Sem dados disponiveis
+              </Typography>
+            </>
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={12} lg={10} md={10} xl={10} sx={{ marginTop: "100px" }}>
-        <Typography variant="h5" gutterBottom sx={{ marginBottom: "50px" }}>
-          Gerenciar Empresas
-        </Typography>
-        {users !== undefined ? <Table data={users} /> : null}
-      </Grid>
-    </Grid>
+    </Container>
   );
 };
 

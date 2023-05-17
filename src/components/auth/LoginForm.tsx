@@ -31,7 +31,7 @@ const animate = {
 const LoginForm = ({ setAuth }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/home";
   const setIsLogged = useUserStore((state) => state.setLogged);
   const setToken = useUserStore((state) => state.setToken);
   const setRefreshToken = useUserStore((state) => state.setRefreshToken);
