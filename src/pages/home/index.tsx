@@ -169,7 +169,7 @@ const Home = ({ setAuth }) => {
 
     onSubmit: () => {
       FilesService.get(
-        `/files/DAS?empresa=${
+        `/files/comparar?empresa=${
           formik.values.id
         }&periodo=${formik.values.date.format("YYYY-MM-DD")}`,
         {
