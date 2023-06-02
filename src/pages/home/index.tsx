@@ -167,6 +167,7 @@ const Home = ({ setAuth }) => {
       id: "",
     },
 
+
     onSubmit: () => {
       FilesService.get(
         `/files/comparar?empresa=${
