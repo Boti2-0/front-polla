@@ -83,7 +83,7 @@ export default function Table(data: any) {
                     {row.razaoSocial}
                   </TableCell>
                   <TableCell align="left">{cnpj.format(row.cnpj)}</TableCell>
-                  <TableCell align="left">{row.grupo}</TableCell>
+                  <TableCell align="left">{row.grupoName}</TableCell>
                   <TableCell align="left">{row.uf}</TableCell>
                   <TableCell align="center">
                     {row.icms ? (

@@ -64,18 +64,34 @@ const NewEmpresa = ({ setAuth }) => {
   const from = location.state?.from?.pathname || "/empresas";
   const edit = EmpresaStore((state) => state.Empresa);
   const cleanEmpresas = EmpresaStore((state) => state.clearEmpresa);
-  const [grupos, getGrupos]: any = React.useState(() => {
+  const [grupos, setGrupos]: any = React.useState(() => {
     CadastroEmpresaService.get("/empresa/grupos", {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
-      getGrupos(res.data);
+      const data = res.data;
+
+      // Mapear o objeto para um array de objetos com chaves e valores
+      const mappedOptions = Object.entries(data).map(([key, value]) => ({
+        key,
+        value,
+      }));
+
+      setGrupos(mappedOptions);
     });
   });
-  const [regimes, getRegimes]: any = React.useState(() => {
+  const [regimes, setRegimes]: any = React.useState(() => {
     CadastroEmpresaService.get("/empresa/regimes", {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
-      getRegimes(res.data);
+      const data = res.data;
+
+      // Mapear o objeto para um array de objetos com chaves e valores
+      const mappedOptions = Object.entries(data).map(([key, value]) => ({
+        key,
+        value,
+      }));
+
+      setRegimes(mappedOptions);
     });
   });
 
@@ -220,9 +236,9 @@ const NewEmpresa = ({ setAuth }) => {
                         label="grupo"
                         {...getFieldProps("grupo")}
                       >
-                        {grupos?.map((grupo, key) => (
-                          <MenuItem key={key} value={grupo}>
-                            {grupo}
+                        {grupos?.map((grupo) => (
+                          <MenuItem key={grupo.key} value={grupo.key}>
+                            {grupo.value}
                           </MenuItem>
                         ))}
                       </Select>
@@ -236,9 +252,9 @@ const NewEmpresa = ({ setAuth }) => {
                         label="regime"
                         {...getFieldProps("regime")}
                       >
-                        {regimes?.map((regime, key) => (
-                          <MenuItem key={key} value={regime}>
-                            {regime}
+                        {regimes?.map((regime) => (
+                          <MenuItem key={regime.key} value={regime.key}>
+                            {regime.value}
                           </MenuItem>
                         ))}
                       </Select>

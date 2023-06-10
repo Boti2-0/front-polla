@@ -58,19 +58,6 @@ const Login = ({ setAuth }) => {
 
           <Divider sx={{ my: 3 }} component={motion.div} {...fadeInUp} />
           <LoginForm setAuth={setAuth} />
-          <Typography
-            component={motion.p}
-            {...fadeInUp}
-            variant="body2"
-            align="center"
-            sx={{ mt: 3 }}
-          >
-            Ainda não possui uma conta?
-            <Link variant="subtitle2" component={RouterLink} to="/register">
-              {" "}
-              Cadastre-se
-            </Link>
-          </Typography>
         </ContentStyle>
       </Container>
     </RootStyle>
