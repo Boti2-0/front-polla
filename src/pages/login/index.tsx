@@ -1,4 +1,4 @@
-import { Container, Typography, Link, Box, Divider } from "@mui/material";
+import { Container, Typography, Box, Divider } from "@mui/material";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import Logo from "../../components/logo/Logo";
