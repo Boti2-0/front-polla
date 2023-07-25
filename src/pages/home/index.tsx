@@ -12,6 +12,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import Sidebar from "./../../components/sidebar";
 import Header from "../../components/header";
@@ -22,7 +24,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { useUserStore } from "../../stores/users";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { CadastroEmpresaService } from "../../services/api";
 import { FilesService } from "../../services/api";
 import { ToastContainer, toast } from "react-toastify";
@@ -33,6 +35,7 @@ import "dayjs/locale/pt-br";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import DashTable from "../../components/dashTable";
+import { ClipLoader } from "react-spinners";
 
 let easing = [0.6, -0.05, 0.01, 0.99];
 const animate = {
@@ -49,6 +52,9 @@ const Home = ({ setAuth }) => {
   const token = useUserStore((state) => state.token);
   const [data, getData]: any = useState();
   const [faturamentos, setFaturamentos]: any = useState();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
+  const width = matches ? 500 : 300;
   const [users, getUsers]: any = useState(() => {
     CadastroEmpresaService.get("/empresa?search=id>0", {
       headers: { Authorization: `Bearer ${token}` },
@@ -56,10 +62,9 @@ const Home = ({ setAuth }) => {
       const result = res.data.map((item) => {
         return {
           id: item.id,
-          label: item.razaoSocial,
+          label: item.codigo + " - " + item.razaoSocial,
         };
       });
-      console.log(result);
       getUsers(result);
     });
   });
@@ -70,6 +75,7 @@ const Home = ({ setAuth }) => {
     },
 
     onSubmit: () => {
+      getData(null);
       FilesService.get(
         `/files/comparar?empresa=${
           formik.values.id
@@ -121,6 +127,12 @@ const Home = ({ setAuth }) => {
         });
     },
   });
+
+  const override: CSSProperties = {
+    display: "block",
+    margin: "auto",
+    marginTop: "50px",
+  };
 
   const { handleSubmit, setFieldValue, isSubmitting } = formik;
   return (
@@ -218,7 +230,7 @@ const Home = ({ setAuth }) => {
                                 ) => {
                                   setFieldValue("id", value.id);
                                 }}
-                                sx={{ minWidth: 300 }}
+                                sx={{ minWidth: width }}
                               />
                             ) : null}
                           </FormControl>
@@ -350,16 +362,29 @@ const Home = ({ setAuth }) => {
                 justifyContent={"center"}
                 flexDirection={"column"}
               >
-                <Typography variant="h4" textAlign={"center"} mt={10}>
-                  Sem dados disponiveis
-                </Typography>
-                <Box
-                  component="img"
-                  src={img}
-                  alt="logo"
-                  width="45%"
-                  margin={"auto"}
-                />
+                {isSubmitting ? (
+                  <ClipLoader
+                    color={"#1565C0"}
+                    loading={isSubmitting}
+                    size={100}
+                    cssOverride={override}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                ) : (
+                  <>
+                    <Typography variant="h4" textAlign={"center"} mt={10}>
+                      Sem dados disponiveis
+                    </Typography>
+                    <Box
+                      component="img"
+                      src={img}
+                      alt="logo"
+                      width="45%"
+                      margin={"auto"}
+                    />
+                  </>
+                )}
               </Box>
             )}
           </Grid>

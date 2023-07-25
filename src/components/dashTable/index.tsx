@@ -6,6 +6,10 @@ import TableRow from "@mui/material/TableRow";
 import { Cell, CustomTable, TableMain } from "./styled";
 
 export default function DashTable(data: any) {
+  const formatter = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
   return (
     <CustomTable>
       <TableMain>
@@ -20,8 +24,14 @@ export default function DashTable(data: any) {
           {data.data.map((row: any, index: number) => (
             <TableRow key={index} hover>
               <TableCell align="center">{row.mes}</TableCell>
-              <TableCell align="center">R$ {row.receita}</TableCell>
-              <TableCell align="center">{row.imposto !== null ?  'R$ '+ row.imposto : 'Sem valor'}</TableCell>
+              <TableCell align="center">
+                {formatter.format(row.receita) ?? "Sem valor"}
+              </TableCell>
+              <TableCell align="center">
+                {row.imposto !== null
+                  ? formatter.format(row.imposto)
+                  : "Sem valor"}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
