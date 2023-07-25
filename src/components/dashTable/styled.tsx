@@ -5,9 +5,9 @@ export const CustomTable = styled(TableContainer)`
     && {
       box-shadow: 0px 34px 34px rgba(13, 46, 97, 0.05);
       border-radius: 8px;
-      width: 30%;
+      width:100%;
+      margin-left: 14px;
       background-color: white;
-      margin-top: 60px;
       margin-bottom: 40px;
   `;
 export const TableMain = styled(Table)`
