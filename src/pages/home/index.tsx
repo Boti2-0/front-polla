@@ -244,95 +244,109 @@ const Home = ({ setAuth }) => {
                 </Card>
               </Form>
             </FormikProvider>
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={4} lg={4} xl={4}>
-                {faturamentos ? <DashTable data={faturamentos} /> : null}
-              </Grid>
-              <Grid item xs={12} md={8} lg={8} xl={8}>
-                <Stack
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={animate}
-                  direction={{ xs: "column", sm: "column" }}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  {data ? (
-                    data.itens.map((item, index) => (
-                      <div>
-                        <Accordion
-                          sx={{
-                            marginTop: index === 0 ? "0px" : 1,
-                            marginRight: 2,
-                            boxShadow: "0px 34px 34px rgba(13, 46, 97, 0.09)",
-                            borderRadius: "10px",
-                          }}
-                        >
-                          <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                          >
-                            <div
-                              style={{
-                                alignSelf: "center",
-                                marginRight: "20px",
+            {data ? (
+              <Grid container spacing={4}>
+                <Grid item xs={12} md={4} lg={4} xl={4}>
+                  {faturamentos ? <DashTable data={faturamentos} /> : null}
+                </Grid>
+                <Grid item xs={12} md={8} lg={8} xl={8}>
+                  <Stack
+                    component={motion.div}
+                    initial={{ opacity: 0, y: 60 }}
+                    animate={animate}
+                    direction={{ xs: "column", sm: "column" }}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    {data
+                      ? data.itens.map((item, index) => (
+                          <div>
+                            <Accordion
+                              sx={{
+                                marginTop: index === 0 ? "0px" : 1,
+                                marginRight: 2,
+                                boxShadow:
+                                  "0px 34px 34px rgba(13, 46, 97, 0.09)",
+                                borderRadius: "10px",
                               }}
                             >
-                              {item.statusAprovado ? (
-                                <ChipAlert size="small" label={"APROVADO"} />
-                              ) : (
-                                <ChipSucess size="small" label={"RECUSADO"} />
-                              )}
-                            </div>
-                            <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                              {item.item}
-                            </Typography>
-                            <Typography sx={{ color: "text.secondary" }}>
-                              {item.desc}
-                            </Typography>
-                          </AccordionSummary>
-                          <AccordionDetails>
-                            <Typography color={"white"} marginBottom={"-20px"}>
-                              Nulla facilisi. Phasellus sollicitudin nulla et
-                              quam mattis feugiat. Aliquam eget maximus est, id
-                              dignissim quam.
-                            </Typography>
-                            {item.subDescricaoList ? (
-                              item?.subDescricaoList.map((sub) => (
-                                <>
+                              <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                              >
+                                <div
+                                  style={{
+                                    alignSelf: "center",
+                                    marginRight: "20px",
+                                  }}
+                                >
+                                  {item.statusAprovado ? (
+                                    <ChipAlert
+                                      size="small"
+                                      label={"APROVADO"}
+                                    />
+                                  ) : (
+                                    <ChipSucess
+                                      size="small"
+                                      label={"RECUSADO"}
+                                    />
+                                  )}
+                                </div>
+                                <Typography
+                                  sx={{ width: "33%", flexShrink: 0 }}
+                                >
+                                  {item.item}
+                                </Typography>
+                                <Typography sx={{ color: "text.secondary" }}>
+                                  {item.desc}
+                                </Typography>
+                              </AccordionSummary>
+                              <AccordionDetails>
+                                <Typography
+                                  color={"white"}
+                                  marginBottom={"-20px"}
+                                >
+                                  Nulla facilisi. Phasellus sollicitudin nulla
+                                  et quam mattis feugiat. Aliquam eget maximus
+                                  est, id dignissim quam.
+                                </Typography>
+                                {item.subDescricaoList ? (
+                                  item?.subDescricaoList.map((sub) => (
+                                    <>
+                                      <Typography variant="h6">
+                                        {sub.subDesc}
+                                      </Typography>
+                                      <a
+                                        href={sub.link}
+                                        rel="noreferrer"
+                                        target="_blank"
+                                      >
+                                        Link para a nota
+                                      </a>
+                                    </>
+                                  ))
+                                ) : (
                                   <Typography variant="h6">
-                                    {sub.subDesc}
+                                    Sem detalhes disponiveis
                                   </Typography>
-                                  <a
-                                    href={sub.link}
-                                    rel="noreferrer"
-                                    target="_blank"
-                                  >
-                                    Link para a nota
-                                  </a>
-                                </>
-                              ))
-                            ) : (
-                              <Typography variant="h6">
-                                Sem detalhes disponiveis
-                              </Typography>
-                            )}
-                          </AccordionDetails>
-                        </Accordion>
-                      </div>
-                    ))
-                  ) : (
-                    <>
-                      <Typography variant="h4" textAlign={"center"} mt={10}>
-                        Sem dados disponiveis
-                      </Typography>
-                      <Box component="img" src={img} alt="logo" width="50%" />
-                    </>
-                  )}
-                </Stack>
+                                )}
+                              </AccordionDetails>
+                            </Accordion>
+                          </div>
+                        ))
+                      : null}
+                  </Stack>
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              <Box display={'flex'} alignContent={'center'} justifyContent={'center'} flexDirection={'column'}>
+                <Typography variant="h4" textAlign={"center"} mt={10}>
+                  Sem dados disponiveis
+                </Typography>
+                <Box component="img" src={img} alt="logo" width="45%" margin={'auto'}/>
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Container>
