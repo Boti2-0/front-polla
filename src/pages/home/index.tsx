@@ -56,7 +56,7 @@ const Home = ({ setAuth }) => {
       const result = res.data.map((item) => {
         return {
           id: item.id,
-          razaoSocial: item.razaoSocial,
+          label: item.razaoSocial,
         };
       });
       console.log(result);
@@ -166,7 +166,7 @@ const Home = ({ setAuth }) => {
               Dashboard
             </Typography>
             <FormikProvider value={formik}>
-              <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+              <Form noValidate onSubmit={handleSubmit}>
                 <Card
                   component={motion.div}
                   initial={{ opacity: 0, y: 60 }}
@@ -211,11 +211,14 @@ const Home = ({ setAuth }) => {
                                 renderInput={(params) => (
                                   <TextField {...params} label="Empresa" />
                                 )}
-                                options={users.map(
-                                  (option) => option.razaoSocial
-                                )}
+                                options={users}
+                                onChange={(
+                                  event,
+                                  value: { id: Number; label: string }
+                                ) => {
+                                  setFieldValue("id", value.id);
+                                }}
                                 sx={{ minWidth: 300 }}
-                                {...getFieldProps("id")}
                               />
                             ) : null}
                           </FormControl>
@@ -244,6 +247,7 @@ const Home = ({ setAuth }) => {
                 </Card>
               </Form>
             </FormikProvider>
+
             {data ? (
               <Grid container spacing={4}>
                 <Grid item xs={12} md={4} lg={4} xl={4}>
@@ -340,11 +344,22 @@ const Home = ({ setAuth }) => {
                 </Grid>
               </Grid>
             ) : (
-              <Box display={'flex'} alignContent={'center'} justifyContent={'center'} flexDirection={'column'}>
+              <Box
+                display={"flex"}
+                alignContent={"center"}
+                justifyContent={"center"}
+                flexDirection={"column"}
+              >
                 <Typography variant="h4" textAlign={"center"} mt={10}>
                   Sem dados disponiveis
                 </Typography>
-                <Box component="img" src={img} alt="logo" width="45%" margin={'auto'}/>
+                <Box
+                  component="img"
+                  src={img}
+                  alt="logo"
+                  width="45%"
+                  margin={"auto"}
+                />
               </Box>
             )}
           </Grid>
