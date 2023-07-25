@@ -122,7 +122,7 @@ const Home = ({ setAuth }) => {
     },
   });
 
-  const { handleSubmit, getFieldProps, setFieldValue, isSubmitting } = formik;
+  const { handleSubmit, setFieldValue, isSubmitting } = formik;
   return (
     <>
       <ToastContainer
