@@ -76,6 +76,7 @@ const Home = ({ setAuth }) => {
 
     onSubmit: () => {
       getData(null);
+      setFaturamentos(null);
       FilesService.get(
         `/files/comparar?empresa=${
           formik.values.id
@@ -260,7 +261,7 @@ const Home = ({ setAuth }) => {
               </Form>
             </FormikProvider>
 
-            {data ? (
+            {data && formik.isSubmitting !== true ? (
               <Grid container spacing={4}>
                 <Grid item xs={12} md={4} lg={4} xl={4}>
                   {faturamentos ? <DashTable data={faturamentos} /> : null}
